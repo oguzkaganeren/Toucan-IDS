@@ -108,19 +108,19 @@ toucan = """\033[34m
 """
 os.system("espeak 'Welcome to Toucan Network Defender'")
 
-print toucan
+print(toucan)
 
 time_current = time.strftime("%I:%M:%S")
 logging.info('%s' % time_current)
 date_current = time.strftime("%d/%m/%Y\n")
 logging.info('%s' % date_current)
 
-print """
+print ("""
 Toucan is a Wireless Intrusion Detection System written in python. Capabilities include scanning and defending hosts
 on a network by actively monitoring traffic for both man in the middle and deauthentication attacks. This program is
 not to be used on an unauthorized network and the creator is not responsible for any damage done. Using this program
 means you understand and agree to these conditions.
-"""
+""")
 
 counter = 0
 attacker_L2 = ''
@@ -128,23 +128,23 @@ attacker_MAC = ''
 victim_MAC = ''
 victim_L3 = ''
 
-GATEWAY_IP = raw_input("Enter your Gateway IP: ")
+GATEWAY_IP = input("Enter your Gateway IP: ")
 logging.info('Gateway IP: %s' % GATEWAY_IP)
 
-interface = raw_input("\nEnter your Network Interface: ")
+interface = input("\nEnter your Network Interface: ")
 logging.info('Interface: %s' % interface)
 
-n_range = raw_input("\nEnter your network range to defend (in format 10.0.0.1/24): ")
+n_range = input("\nEnter your network range to defend (in format 10.0.0.1/24): ")
 logging.info('Network range to defend: %s' % n_range)
 
-print"[*] Gateway Locked in..."
+print("[*] Gateway Locked in...")
 time.sleep(.2)
-print"[*] Interface configured..."
+print("[*] Interface configured...")
 time.sleep(.2)
-print"[*] Network Range set..."
+print("[*] Network Range set...")
 time.sleep(.2)
-print"[*] Commensing..."
-print"\n"
+print("[*] Commensing...")
+print("\n")
 
 class perty_colors:
 
@@ -176,7 +176,7 @@ def arp_network_range(iprange="%s" % n_range):
 
     for elem in collection:
 
-        print elem
+        print (elem)
 
  
 def arp_display(packet):
@@ -204,29 +204,25 @@ def na_packet_discovery(neighbor_adv_packet):
 
   if neighbor_adv_packet.haslayer(IPv6) and neighbor_adv_packet.haslayer(ICMPv6ND_NA):
 
-    print "Neighbor advertisement discovered: %s" % (neighbor_adv_packet.summary())
+    print ("Neighbor advertisement discovered: %s" % (neighbor_adv_packet.summary()))
 
-    print 'Neighbor solicitation source: %s, destination: %s ' % (neighbor_adv_packet[IPv6].src, neighbor_adv_packet[IPv6].dst)  
-
-    logging.info('Neighbor advertisement source: %s, destination: %s' % (neighbor_adv_packet[IPv6].src, neighbor_adv_packet[IPv6].dst))
+    print ('Neighbor solicitation source: %s, destination: %s ' % (neighbor_adv_packet[IPv6].src, neighbor_adv_packet[IPv6].dst),logging.info('Neighbor advertisement source: %s, destination: %s' % (neighbor_adv_packet[IPv6].src, neighbor_adv_packet[IPv6].dst)))
 
 
 def ns_packet_discovery(neighbor_sol_packet):
 
   if neighbor_sol_packet.haslayer(IPv6) and neighbor_sol_packet.haslayer(ICMPv6ND_NS):
 
-    print "Neighbor solicitation discovered: %s" % (neighbor_sol_packet.summary())
+    print ("Neighbor solicitation discovered: %s" % (neighbor_sol_packet.summary()))
 
-    print '[*]Neighbor solicitation source: %s, destination: %s' % (neighbor_sol_packet[IPv6].src, neighbor_sol_packet[IPv6].dst)  
-
-    logging.info('Neighbor solicitation source: %s, destination: %s' % (neighbor_sol_packet[IPv6].src, neighbor_sol_packet[IPv6].dst))
+    print ('[*]Neighbor solicitation source: %s, destination: %s' % (neighbor_sol_packet[IPv6].src, neighbor_sol_packet[IPv6].dst),logging.info('Neighbor solicitation source: %s, destination: %s' % (neighbor_sol_packet[IPv6].src, neighbor_sol_packet[IPv6].dst)))
 
 
 def detect_deauth(deauth_packet):
 
   if deauth_packet.haslayer(Dot11) and deauth_packet.type == 0 and deauth_packet.subtype == 0xC:
 
-    print "DEAUTH DETECTED: %s" % (deauth_packet.summary())
+    print ("DEAUTH DETECTED: %s" % (deauth_packet.summary()))
 
     logging.warning('Deauth detected. Responding...')
 
@@ -283,7 +279,7 @@ def defensive_deauth(GATEWAY_MAC):
   for n in range(int(count)):
 
     sendp(packet)
-    print 'Removing malicious host at:' + hacker + 'off of network.'
+    print ('Removing malicious host at:' + hacker + 'off of network.')
 
 
 def monitor_traffic():
@@ -294,7 +290,7 @@ def monitor_traffic():
 
   for packet in monitor.sniff_continuously(packet_count=5):
 
-    print 'Traffic detected: ', packet
+    print ('Traffic detected: ', packet)
 
 def sniff_arps():
 
@@ -317,7 +313,7 @@ if __name__ == '__main__':
 
     GATEWAY_MAC = get_mac_gateway(GATEWAY_IP)
 
-    print "[*] Gateway %s is at %s" % (GATEWAY_IP, GATEWAY_MAC)
+    print ("[*] Gateway %s is at %s" % (GATEWAY_IP, GATEWAY_MAC))
 
     arp_network_range()
 
